@@ -103,7 +103,7 @@ def GetRareMetal(metalType, category, soupRareMetalElement):
 
     productURL = productNameDiv.a['href']
     productName = productNameDiv.a.text
-    productImage = productDetails.div.img['srcset']
+    productImage = productDetails.div.img.get('srcset')
 
     text = ""
     quantity = 1
