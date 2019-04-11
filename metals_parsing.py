@@ -37,7 +37,7 @@ def CreateSoup(url):
     return BeautifulSoup(page)
 
 def ProcessWeight(weightAsString):
-    print("Processing weight", weightAsString)
+    #print("Processing weight", weightAsString)
     multiplier = 1
     try:
         candidates = collections.OrderedDict([("kilogramm", 1000),
@@ -74,6 +74,7 @@ def ProcessWeight(weightAsString):
         return 1
 
 def ProcessPrice(priceAsString):
+    #print("priceAsString", priceAsString)
     temp = priceAsString.replace("EUR", "").replace("&nbsp;&euro;", "")
     temp = temp.strip()
 
@@ -105,10 +106,12 @@ def GetRareMetal(metalType, category, soupRareMetalElement):
     productName = productNameDiv.a.text
     productImage = productDetails.div.img.get('srcset')
 
+    #print(productURL, productName, productImage)
+
     text = ""
     quantity = 1
     weight = productDetails.a['title']
-    price = productPriceDiv.div.findNextSibling().span.text
+    price = productPriceDiv.div.div.findNextSibling().span.text
     if (price != None):
         price = ProcessPrice(price)
     if (weight != None):
@@ -124,6 +127,7 @@ def GetRareMetal(metalType, category, soupRareMetalElement):
 def GetRareMetalsFromPage(metalType, category, soup):
     rareMetals = soup.findAll("div", attrs = {"class" : "product--box box--minimal-2"})
     length = len(rareMetals)
+    #print("length", length)
     metals = []
     for i in xrange(0, length):
         try:
@@ -137,6 +141,7 @@ def GetRareMetalsFromPage(metalType, category, soup):
 
 def GetRareMetals(metalType, overallType, category, subCategory):
     pageUrl = BuildPageUrl(overallType, category, subCategory)
+    #print("page url", pageUrl)
     soup = CreateSoup(pageUrl)
     metals = GetRareMetalsFromPage(metalType, category, soup)
     return metals
